@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SkinSense — Product Recommender</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>SkinSense</h1>
+      <p>Choose your skin type, enter your city/pincode, and get product recommendations + a daily routine.</p>
+    </header>
+
+    <main>
+      <form id="queryForm">
+        <label for="skinType">Skin type</label>
+        <select id="skinType" required>
+          <option value="">-- Select skin type --</option>
+          <option value="normal">Normal</option>
+          <option value="dry">Dry</option>
+          <option value="oily">Oily</option>
+          <option value="combination">Combination</option>
+          <option value="sensitive">Sensitive</option>
+        </select>
+
+        <label for="location">City or Pincode (optional)</label>
+        <input id="location" placeholder="e.g., Hyderabad or 500001" />
+
+        <button type="submit">Get Recommendations</button>
+      </form>
+
+      <section id="results" class="hidden">
+        <h2>Products near you</h2>
+        <div id="products" class="product-grid"></div>
+
+        <h2>Your Routine</h2>
+        <div class="routines">
+          <div>
+            <h3>Morning (AM)</h3>
+            <ul id="routine-am"></ul>
+          </div>
+          <div>
+            <h3>Night (PM)</h3>
+            <ul id="routine-pm"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="noResults" class="hidden">
+        <p>No matching products found for your exact location. Showing general matches for your skin type.</p>
+      </section>
+    </main>
+
+    <footer>
+      <small>Built for college hackathon • Demo only</small>
+    </footer>
+  </div>
+
+<script>
+document.getElementById("queryForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const skinType = document.getElementById("skinType").value;
+  const location = document.getElementById("location").value;
+
+  if (!skinType) {
+    alert("Please select a skin type.");
+    return;
+  }
+
+  // Call backend
+  const res = await fetch("/recommend", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ skinType, location })
+  });
+
+  if (!res.ok) {
+    alert("Server error. Try again.");
+    return;
+  }
+
+  const data = await res.json();
+
+  // Render products
+  const productsDiv = document.getElementById("products");
+  productsDiv.innerHTML = "";
+  if (data.products && data.products.length > 0) {
+    data.products.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <h4>${p.name}</h4>
+        <p class="brand">${p.brand ?? ""} • ₹${p.price ?? "N/A"}</p>
+        <p class="notes">${p.notes ?? ""}</p>
+        <p class="locations"><strong>Available in:</strong> ${ (p.locations || []).join(", ") || "All locations" }</p>
+      `;
+      productsDiv.appendChild(card);
+    });
+    document.getElementById("results").classList.remove("hidden");
+    document.getElementById("noResults").classList.add("hidden");
+  } else {
+    document.getElementById("results").classList.remove("hidden");
+    document.getElementById("noResults").classList.remove("hidden");
+  }
+
+  // Render routines
+  const routineAM = document.getElementById("routine-am");
+  const routinePM = document.getElementById("routine-pm");
+  routineAM.innerHTML = "";
+  routinePM.innerHTML = "";
+
+  (data.routine.am || []).forEach(step => {
+    const li = document.createElement("li");
+    li.textContent = step;
+    routineAM.appendChild(li);
+  });
+  (data.routine.pm || []).forEach(step => {
+    const li = document.createElement("li");
+    li.textContent = step;
+    routinePM.appendChild(li);
+  });
+
+  window.scrollTo({ top: document.getElementById("results").offsetTop - 20, behavior: "smooth" });
+});
+</script>
+</body>
+</html>

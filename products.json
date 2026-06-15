@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "Cetaphil Gentle Skin Cleanser",
+    "brand": "Cetaphil",
+    "skin_types": ["dry", "normal", "sensitive"],
+    "price": 350,
+    "locations": ["Hyderabad", "Vijayawada", "Chennai"],
+    "notes": "Fragrance-free, good for sensitive skin"
+  },
+  {
+    "id": 2,
+    "name": "Neutrogena Oil-Free Moisturizer",
+    "brand": "Neutrogena",
+    "skin_types": ["oily", "combination"],
+    "price": 499,
+    "locations": ["Hyderabad", "Chennai"],
+    "notes": "Non-comedogenic gel moisturizer"
+  },
+  {
+    "id": 3,
+    "name": "Minimalist Hyaluronic Acid Serum",
+    "brand": "Minimalist",
+    "skin_types": ["dry", "normal", "combination"],
+    "price": 699,
+    "locations": ["Vijayawada", "Bangalore"],
+    "notes": "Hydrating serum, good for layering"
+  },
+  {
+    "id": 4,
+    "name": "The Ordinary Niacinamide 10% + Zinc 1%",
+    "brand": "The Ordinary",
+    "skin_types": ["oily", "combination"],
+    "price": 549,
+    "locations": ["Bangalore", "Hyderabad", "Vijayawada"],
+    "notes": "Helps reduce oiliness and blemishes"
+  },
+  {
+    "id": 5,
+    "name": "La Roche-Posay Mineral Sunscreen SPF 50",
+    "brand": "La Roche-Posay",
+    "skin_types": ["sensitive", "normal", "dry"],
+    "price": 899,
+    "locations": ["Chennai", "Bangalore"],
+    "notes": "Mineral-based, good for sensitive skin"
+  }
+]
