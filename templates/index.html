@@ -70,6 +70,7 @@ document.getElementById("queryForm").addEventListener("submit", async (e) => {
   }
 
   // Call backend
+  
   const res = await fetch("/recommend", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
